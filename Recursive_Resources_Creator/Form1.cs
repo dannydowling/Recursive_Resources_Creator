@@ -15,7 +15,6 @@ namespace Recursive_Resources_Creator
         public string resxFilePath { get; set; } = "";
         public string folderPath { get; set; } = "";
 
-        public string[] folderPaths { get; set; } = Array.Empty<string>();
 
 
 
@@ -24,8 +23,7 @@ namespace Recursive_Resources_Creator
             FolderBrowserDialog resourcesDirectory = new FolderBrowserDialog();
             resourcesDirectory.ShowDialog();
             
-                folderPath = resourcesDirectory.SelectedPath;
-                folderPaths.Append(folderPath);
+                folderPath = resourcesDirectory.SelectedPath;                
                
         }
 
@@ -69,13 +67,12 @@ namespace Recursive_Resources_Creator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < folderPaths.Count(); i++)
-            {
+           
                 try
                 {
                     using (ResXResourceWriter writer = new ResXResourceWriter(resxFilePath))
                     {
-                        ProcessDirectory(folderPaths[i], writer);
+                        ProcessDirectory(folderPath, writer);
                         writer.Generate();
                         writer.Close();
                     }
@@ -84,7 +81,7 @@ namespace Recursive_Resources_Creator
                 {
                     MessageBox.Show(ex.Message);
                 }
-            }  
+            
         }
     }
 }
