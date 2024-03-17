@@ -12,24 +12,19 @@ namespace Recursive_Resources_Creator
             InitializeComponent();
         }
 
-        public string saveFilePath { get; set; } = "";
         public string folderPath { get; set; } = "";
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.ShowDialog();
-
-            saveFilePath = sfd.FileName; // Change this to the desired output path for the .resx file
-        }
-
-        static void ProcessDirectory(string directoryPath, ResXResourceWriter writer)
+   
+        static void ProcessDirectory(string directoryPath)
         {
             DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
+            
+            var saveFilePath = $@"c:\resources\{dirInfo.Name}.resx";
+
+            ResXResourceWriter writer = new ResXResourceWriter(saveFilePath);
 
             // Recursively process subdirectories
-           
-                foreach (var file in dirInfo.GetFiles())
+
+            foreach (var file in dirInfo.GetFiles())
                 {
                     // Generate resource name from file path
                     string resourceName = Path.GetFileNameWithoutExtension(file.FullName);
@@ -52,9 +47,10 @@ namespace Recursive_Resources_Creator
 
             folderPath = resourcesDirectory.SelectedPath;
 
-            ResXResourceWriter writer = new ResXResourceWriter(saveFilePath);
-
-            ProcessDirectory(folderPath, writer);
+            // Recurse into subdirectories of this directory.
+            string[] subdirectoryEntries = Directory.GetDirectories(folderPath);
+            foreach (string subdirectory in subdirectoryEntries)
+                ProcessDirectory(subdirectory);            
         }
     }
 }

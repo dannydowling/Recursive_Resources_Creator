@@ -29,35 +29,23 @@
         private void InitializeComponent()
         {
             button1 = new Button();
-            button2 = new Button();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new Point(12, 52);
+            button1.Location = new Point(12, 12);
             button1.Name = "button1";
             button1.Size = new Size(341, 29);
             button1.TabIndex = 0;
-            button1.Text = "Root Folder to Process";
+            button1.Text = "Folder to Process";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(13, 12);
-            button2.Name = "button2";
-            button2.Size = new Size(341, 34);
-            button2.TabIndex = 1;
-            button2.Text = "Set Resx File Save Location";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(385, 132);
-            Controls.Add(button2);
             Controls.Add(button1);
             Name = "Form1";
             Text = "Form1";
@@ -67,6 +55,5 @@
         #endregion
 
         private Button button1;
-        private Button button2;
     }
 }
