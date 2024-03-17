@@ -28,9 +28,8 @@ namespace Recursive_Resources_Creator
             DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
 
             // Recursively process subdirectories
-            foreach (var subDir in dirInfo.GetDirectories())
-            {
-                foreach (var file in subDir.GetFiles())
+           
+                foreach (var file in dirInfo.GetFiles())
                 {
                     // Generate resource name from file path
                     string resourceName = Path.GetFileNameWithoutExtension(file.FullName);
@@ -39,11 +38,11 @@ namespace Recursive_Resources_Creator
                     byte[] fileContents = File.ReadAllBytes(file.FullName);
 
                     // Add file to resources
-                    writer.AddResource(resourceName, fileContents);
-                    writer.Generate();
-                    writer.Close();
+                    writer.AddResource(resourceName, fileContents);                    
                 }
-            }
+                writer.Generate();
+                writer.Close();
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
