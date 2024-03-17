@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using System;
 using System.Resources;
 using System.Windows.Forms;
@@ -14,36 +15,32 @@ namespace Recursive_Resources_Creator
         public string resxFilePath { get; set; } = "";
         public string folderPath { get; set; } = "";
 
-        public string[] folderPaths { get; set; } = new string[0]; 
+        public string[] folderPaths { get; set; } = Array.Empty<string>();
+
 
 
         private void button1_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog resourcesDirectory = new FolderBrowserDialog();
-            if (resourcesDirectory.ShowDialog() == DialogResult.OK)
-            {
+            resourcesDirectory.ShowDialog();
+            
                 folderPath = resourcesDirectory.SelectedPath;
-            }
-            if (folderPath != null)
-            {
                 folderPaths.Append(folderPath);
-            }
+               
         }
 
         static void ProcessDirectory(string directoryPath, ResXResourceWriter writer)
         {
             DirectoryInfo dirInfo = new DirectoryInfo(directoryPath);
 
-            foreach (var file in dirInfo.GetFiles())
-            {
-                // Add file to resources
-                AddResource(writer, file.FullName);
-            }
-
             // Recursively process subdirectories
             foreach (var subDir in dirInfo.GetDirectories())
             {
-                ProcessDirectory(subDir.FullName, writer);
+                foreach (var file in dirInfo.GetFiles())
+                {
+                    // Add file to resources
+                    AddResource(writer, file.FullName);
+                }
             }
         }
 
@@ -57,8 +54,6 @@ namespace Recursive_Resources_Creator
 
             // Add file to resources
             writer.AddResource(resourceName, fileContents);
-            writer.Generate();
-            writer.Close();
 
         }
 
@@ -74,22 +69,22 @@ namespace Recursive_Resources_Creator
 
         private void button3_Click(object sender, EventArgs e)
         {
-            foreach (var item in folderPaths)
+            for (int i = 0; i < folderPaths.Count(); i++)
             {
                 try
                 {
                     using (ResXResourceWriter writer = new ResXResourceWriter(resxFilePath))
                     {
-                        ProcessDirectory(folderPath, writer);
+                        ProcessDirectory(folderPaths[i], writer);
+                        writer.Generate();
+                        writer.Close();
                     }
-
-                    Console.WriteLine("Resource file created successfully.");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("An error occurred: " + ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
-            }
+            }  
         }
     }
 }
