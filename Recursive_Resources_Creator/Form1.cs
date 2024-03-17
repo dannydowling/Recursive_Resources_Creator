@@ -1,3 +1,4 @@
+using System;
 using System.Resources;
 using System.Windows.Forms;
 
@@ -56,6 +57,9 @@ namespace Recursive_Resources_Creator
 
             // Add file to resources
             writer.AddResource(resourceName, fileContents);
+            writer.Generate();
+            writer.Close();
+
         }
 
         private void button2_Click(object sender, EventArgs e)
