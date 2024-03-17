@@ -30,7 +30,6 @@
         {
             button1 = new Button();
             button2 = new Button();
-            button3 = new Button();
             SuspendLayout();
             // 
             // button1
@@ -39,7 +38,7 @@
             button1.Name = "button1";
             button1.Size = new Size(341, 29);
             button1.TabIndex = 0;
-            button1.Text = "Add Resources Folder to include";
+            button1.Text = "Root Folder to Process";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
@@ -53,22 +52,11 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
-            // button3
-            // 
-            button3.Location = new Point(13, 96);
-            button3.Name = "button3";
-            button3.Size = new Size(341, 34);
-            button3.TabIndex = 2;
-            button3.Text = "Go!";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(394, 166);
-            Controls.Add(button3);
+            ClientSize = new Size(385, 132);
             Controls.Add(button2);
             Controls.Add(button1);
             Name = "Form1";
@@ -80,6 +68,5 @@
 
         private Button button1;
         private Button button2;
-        private Button button3;
     }
 }

@@ -12,19 +12,15 @@ namespace Recursive_Resources_Creator
             InitializeComponent();
         }
 
-        public string resxFilePath { get; set; } = "";
+        public string saveFilePath { get; set; } = "";
         public string folderPath { get; set; } = "";
 
-
-
-
-        private void button1_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog resourcesDirectory = new FolderBrowserDialog();
-            resourcesDirectory.ShowDialog();
-            
-                folderPath = resourcesDirectory.SelectedPath;                
-               
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.ShowDialog();
+
+            saveFilePath = sfd.FileName; // Change this to the desired output path for the .resx file
         }
 
         static void ProcessDirectory(string directoryPath, ResXResourceWriter writer)
@@ -34,54 +30,32 @@ namespace Recursive_Resources_Creator
             // Recursively process subdirectories
             foreach (var subDir in dirInfo.GetDirectories())
             {
-                foreach (var file in dirInfo.GetFiles())
+                foreach (var file in subDir.GetFiles())
                 {
+                    // Generate resource name from file path
+                    string resourceName = Path.GetFileNameWithoutExtension(file.FullName);
+
+                    // Read file contents
+                    byte[] fileContents = File.ReadAllBytes(file.FullName);
+
                     // Add file to resources
-                    AddResource(writer, file.FullName);
+                    writer.AddResource(resourceName, fileContents);
+                    writer.Generate();
+                    writer.Close();
                 }
             }
         }
 
-        static void AddResource(ResXResourceWriter writer, string filePath)
+        private void button1_Click(object sender, EventArgs e)
         {
-            // Generate resource name from file path
-            string resourceName = Path.GetFileNameWithoutExtension(filePath);
+            FolderBrowserDialog resourcesDirectory = new FolderBrowserDialog();
+            resourcesDirectory.ShowDialog();
 
-            // Read file contents
-            byte[] fileContents = File.ReadAllBytes(filePath);
+            folderPath = resourcesDirectory.SelectedPath;
 
-            // Add file to resources
-            writer.AddResource(resourceName, fileContents);
+            ResXResourceWriter writer = new ResXResourceWriter(saveFilePath);
 
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.ShowDialog();
-
-            resxFilePath = sfd.FileName; // Change this to the desired output path for the .resx file
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-           
-                try
-                {
-                    using (ResXResourceWriter writer = new ResXResourceWriter(resxFilePath))
-                    {
-                        ProcessDirectory(folderPath, writer);
-                        writer.Generate();
-                        writer.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            
+            ProcessDirectory(folderPath, writer);
         }
     }
 }
