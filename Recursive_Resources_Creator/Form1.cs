@@ -3,8 +3,6 @@ using System.Windows.Forms;
 
 namespace Recursive_Resources_Creator
 {
-
-
     public partial class Form1 : Form
     {
         public Form1()
@@ -15,7 +13,7 @@ namespace Recursive_Resources_Creator
         public string resxFilePath { get; set; } = "";
         public string folderPath { get; set; } = "";
 
-        public string[] folderPaths { get; set; }
+        public string[] folderPaths { get; set; } = new string[0]; 
 
 
         private void button1_Click(object sender, EventArgs e)
@@ -27,7 +25,6 @@ namespace Recursive_Resources_Creator
             }
             if (folderPath != null)
             {
-
                 folderPaths.Append(folderPath);
             }
         }
